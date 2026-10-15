@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - ApexMarket+</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { min-height: 100vh; display: flex; flex-direction: column; background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+        .container { max-width: 1100px; margin: 0 auto; width: 100%; padding: 0 1.5rem; }
+        header { background: rgba(15, 23, 42, 0.9); border-bottom: 1px solid #1e293b; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: #fff; text-decoration: none; }
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin: 4rem 0; align-items: center; }
+        .product-img { width: 100%; border-radius: 12px; border: 1px solid #334155; object-fit: cover; height: 400px; background: #1e293b; }
+        .btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; font-size: 1rem; }
+        .btn-cart { background: #334155; color: #fff; }
+        .btn-buy { background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; }
+        footer { background: #020617; border-top: 1px solid #1e293b; color: #94a3b8; padding: 2rem; margin-top: auto; text-align: center; }
+        @media(max-width: 768px) { .details-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo">Apex<span style="color: #818cf8;">Market</span><span style="color: #a855f7;">+</span></a>
+        <a href="/" style="color: #94a3b8; text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Back to Store</a>
+    </header>
+
+    <main class="container">
+        <div id="productDetails" class="details-grid"></div>
+    </main>
+
+    <footer>
+        <p>Sialkot, Pakistan | Contact: 03056225317</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id'));
+        const product = products.find(p => p.id === productId);
+
+        const container = document.getElementById('productDetails');
+        if (product) {
+            container.innerHTML = `
+                <div>
+                    <img src="${product.image}" alt="${product.title}" class="product-img">
+                </div>
+                <div>
+                    <span style="background: #1e293b; color: #818cf8; padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.85rem; border: 1px solid #334155;">${product.category}</span>
+                    <h1 style="font-size: 2.2rem; margin: 1rem 0 0.5rem 0; color: #fff;">${product.title}</h1>
+                    <div style="color: #fbbf24; margin-bottom: 1rem;">★ ${product.rating} Rating</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #818cf8; margin-bottom: 1rem;">$${product.price}</div>
+                    <p style="color: #94a3b8; line-height: 1.6; margin-bottom: 1.5rem;">${product.description}</p>
+                    <div class="btn-group">
+                        <button onclick="addToCart(${product.id})" class="btn btn-cart"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</button>
+                        <button onclick="buyNow(${product.id})" class="btn btn-buy"><i class="fa-solid fa-bolt"></i> Buy It Now</button>
+                    </div>
+                </div>
+            `;
+        } else {
+            container.innerHTML = '<h2 style="grid-column: 1/-1; text-align: center; color: #94a3b8;">Product not found.</h2>';
+        }
+    </script>
+    <script>
+    // Check if user is logged in
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) {
+        window.location.href = '/login';
+    }
+</script>
+</body>
+</html>
